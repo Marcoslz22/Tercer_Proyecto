@@ -29,7 +29,7 @@ module Contador_Datos(
     output reg [6:0] c_2
     );
 	 
-	 reg estado = 1'd0;
+
 	 
 	 wire en_2;
 	 wire [6:0] N;
