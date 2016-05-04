@@ -24,7 +24,7 @@ module Contador_Datos(
     input B,
     input clk,
     input W_R,
-    input en,
+ 
 	 input [6:0] condicion_c2,
     output reg [6:0] c_2
     );
