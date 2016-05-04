@@ -28,8 +28,10 @@ module Contador_Datos(
 	 input [6:0] condicion_c2,
     output reg [6:0] c_2
     );
-	
-
+	 
+	 reg estado = 1'd0;
+	 
+	 wire en_2;
 	 wire [6:0] N;
 	 
 	 assign en_2 = ~W_R;
@@ -54,7 +56,7 @@ module Contador_Datos(
 						   c_2 <= c_2 + 1'd1;
 				        end
 						
-						else  c_2 <= c_2;
+						else  c_2 <= c_3;
 						
 				  end
 				  else 
