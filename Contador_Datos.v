@@ -28,9 +28,7 @@ module Contador_Datos(
 	 input [6:0] condicion_c2,
     output reg [6:0] c_2
     );
-	 
-	 reg estado = 1'd0;
-	 reg estado2 = 1'd0;
+	
 	 wire en_2;
 	 wire [6:0] N;
 	 
