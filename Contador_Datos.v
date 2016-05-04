@@ -29,7 +29,7 @@ module Contador_Datos(
     output reg [6:0] c_2
     );
 	
-	 wire en_2;
+
 	 wire [6:0] N;
 	 
 	 assign en_2 = ~W_R;
