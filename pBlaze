@@ -22,14 +22,14 @@ NAMEREG uno,                           s4
 NAMEREG listo_reg,                     s5 ; prueba
 
 
-Iniciar:            LOAD      status2,    02
-                    LOAD      dat_dir_0, 10
-                    LOAD      dat_dir_1, 00
-                    LOAD      dat_dir_0, D2
+Iniciar:            LOAD      dat_dir_0, 02
+                    LOAD      dat_dir_1, 10
+                    LOAD      dat_dir_2, 00
+                    LOAD      dat_dir_3, D2
                     LOAD      uno,       01
-                    LOAD      listo_reg, 01 ; para probar el bucle
-                    CALL      ciclo_listo ;  acomadar dentro del inicializado
-                    CALL      secuencia_de_inicializacio
+                    LOAD      listo_reg, 01 ; para probar el bucl
+    
+                    CALL      secuencia_de_inicializacion
                     CALL      leer; lee los datos provenientes del rtc
                     CALL      escribir; tener en cuenta las interrupcones
                     
@@ -39,6 +39,18 @@ Iniciar:            LOAD      status2,    02
 ;ciclo_listo se intancia en secuencia_de_inicializacio, cuando bucle de c-listo, se hace un jump a leer para conocer el estado 
 ; del rtc
 
+secuencia_de_inicializacion:   OUTPUT   dat_dir_0, escribe_dir
+                               OUTPUT   dat_dir_1, escribe_dato
+                               CALL      ciclo_listo ;  acomadar dentro del inicializado
+                               ; falta algo
+                               OUTPUT   dat_dir_0, escribe_dir
+                               OUTPUT   dat_dir_2, escribe_dato
+                               CALL      ciclo_listo ;  acomadar dentro del inicializado
+                               ; falta algo  
+                               OUTPUT   dat_dir_1, escribe_dir
+                               OUTPUT   dat_dir_3, escribe_dato
+                               CALL      ciclo_listo ;  acomadar dentro del inicializado
+                               ; falta algo 
 ciclo_listo:        SUB       uno, listo
                     JUMP      NZ, ciclo_listo
                     RETURN       
