@@ -51,6 +51,7 @@ secuencia_de_inicializacion:   OUTPUT   dat_dir_0, escribe_dir
                                OUTPUT   dat_dir_3, escribe_dato
                                CALL      ciclo_listo ;  acomadar dentro del inicializado
                                ; falta algo 
+                               RETURN
 ciclo_listo:        SUB       uno, listo
                     JUMP      NZ, ciclo_listo
                     RETURN       
