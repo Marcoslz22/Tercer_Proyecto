@@ -1,0 +1,39 @@
+
+; defino los registros de salida
+; 
+CONSTANT control_listo ,  01      
+CONSTANT control_escribe, 02     
+CONSTANT control_lee,     03        
+CONSTANT escribe_dato,    04       
+CONSTANT escribe_dir,     05      
+
+; defino los registros de entrada
+CONSTANT listo,                     06
+CONSTANT listo_escribe,             07
+CONSTANT listo_lee,                 8
+
+; defino los valores que voy a ocupar en el transcurso
+
+NAMEREG status,                        s0
+NAMEREG dat_dir_0,                     s1
+NAMEREG dat_dir_1,                     s2
+NAMEREG dat_dir_2,                     s3
+NAMEREG uno,                           s4
+NAMEREG listo_reg,                     s5;prueba
+
+
+Iniciar:            LOAD      status,    02
+                    LOAD      dat_dir_0, 10
+                    LOAD      dat_dir_1, 00
+                    LOAD      dat_dir_0, D2
+                    LOAD      uno,       01
+                    LOAD      listo_reg, 01
+                    INPUT     listo, listo_reg
+                    CALL      ciclo_listo ;  ciclo para, agregar lo de envio comprobar el cambio del parametro
+
+
+ciclo_listo:        SUB       uno, listo
+                    JUMP      NZ, ciclo_listo
+                    RETURN       
+
+
