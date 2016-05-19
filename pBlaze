@@ -8,9 +8,9 @@ CONSTANT escribe_dato,    04
 CONSTANT escribe_dir,     05      
 
 ; defino los puertos de entrada, los que van al MUX de los esquematicos
-CONSTANT listo,                     06
-CONSTANT listo_escribe,             07
-CONSTANT listo_lee,                 08
+CONSTANT listo,                     01
+CONSTANT listo_escribe,             02
+CONSTANT listo_lee,                 03
 
 ; defino los valores que voy a ocupar en el transcurso, ingresar acá cada registro necesario
 
