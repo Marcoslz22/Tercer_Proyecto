@@ -15,17 +15,20 @@ CONSTANT listo_lee,                 03
 ; defino los puertos de entrada, de la carga de los registros
 CONSTANT      dat_dir_0, 04; 02
 CONSTANT      dat_dir_1, 05; 10
-CONSTANT      dat_dir_2, 06; 00
+CONSTANT      dat_dir_2, 06; 00 
 CONSTANT      dat_dir_3, 07; D2
 CONSTANT      UNO,       08; 1
+CONSTANT      F1,        09; f1
+CONSTANT      H_21,      10; 21
 
 Iniciar:            INPUT    s0, dat_dir_0
                     INPUT    s1, dat_dir_1
-                    INPUT    s2, dat_dir_2
+                    INPUT    s2, dat_dir_2;--------no cambiar------------
                     INPUT    s3, dat_dir_3
-                    CALL      secuencia_de_inicializacion
-                    CALL      leer; lee los datos provenientes del rtc
-                    CALL      escribir; tener en cuenta las interrupcones
+                    INPUT    s4, UNO ;-------------no cambiarlo----------
+                    CALL     secuencia_de_inicializacion
+                    CALL     leer; lee los datos provenientes del rtc
+                    ; CALL     escribir tener en cuenta las interrupcones
                     
 ;La maquina de estados 'iniciar' debe generar una bandera cuando le llegue cuando el pico le envie control_listo en alto, 
 ;hasta que la maquina no envie listo en alto se esperara mediante el cilo la carga de los datos, cuando esta termine levanta 
@@ -35,30 +38,37 @@ Iniciar:            INPUT    s0, dat_dir_0
 
 secuencia_de_inicializacion:   OUTPUT   s0, escribe_dir
                                OUTPUT   s1, escribe_dato
-                               CALL      ciclo_listo ;  acomadar dentro del inicializado
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;  
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
                                
                                OUTPUT   s0, escribe_dir
                                OUTPUT   s2, escribe_dato
-                               CALL      ciclo_listo ;  acomadar dentro del inicializado
-                                 
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;  
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
+                               
                                OUTPUT   s1, escribe_dir
                                OUTPUT   s3, escribe_dato
-                               CALL      ciclo_listo ;  acomadar dentro del inicializado
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
                                
                                RETURN
                                
-leer:   
-
-
-
-
-
-
-
-
+leer:   INPUT  s0, F1
+        OUTPUT s0, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s5, H_21
+        OUTPUT s5, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        JUMP leer
 
 ciclo_listo:        INPUT     s5, listo
-                    INPUT     s4, UNO
                     SUB       s4, s5
                     JUMP      NZ, ciclo_listo
                     RETURN       
