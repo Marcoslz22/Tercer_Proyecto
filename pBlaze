@@ -12,23 +12,17 @@ CONSTANT listo,                     01
 CONSTANT listo_escribe,             02
 CONSTANT listo_lee,                 03
 
-; defino los valores que voy a ocupar en el transcurso, ingresar acá cada registro necesario
+; defino los puertos de entrada, de la carga de los registros
+CONSTANT      dat_dir_0, 04; 02
+CONSTANT      dat_dir_1, 05; 10
+CONSTANT      dat_dir_2, 06; 00
+CONSTANT      dat_dir_3, 07; D2
+CONSTANT      UNO,       08; 1
 
-NAMEREG status,                        s0
-NAMEREG dat_dir_0,                     s1
-NAMEREG dat_dir_1,                     s2
-NAMEREG dat_dir_2,                     s3
-NAMEREG uno,                           s4
-NAMEREG listo_reg,                     s5 ; prueba
-
-
-Iniciar:            LOAD      dat_dir_0, 02
-                    LOAD      dat_dir_1, 10
-                    LOAD      dat_dir_2, 00
-                    LOAD      dat_dir_3, D2
-                    LOAD      uno,       01
-                    LOAD      listo_reg, 01 ; para probar el bucl
-    
+Iniciar:            INPUT    s0, dat_dir_0
+                    INPUT    s1, dat_dir_1
+                    INPUT    s2, dat_dir_2
+                    INPUT    s3, dat_dir_3
                     CALL      secuencia_de_inicializacion
                     CALL      leer; lee los datos provenientes del rtc
                     CALL      escribir; tener en cuenta las interrupcones
@@ -39,20 +33,33 @@ Iniciar:            LOAD      dat_dir_0, 02
 ;ciclo_listo se intancia en secuencia_de_inicializacio, cuando bucle de c-listo, se hace un jump a leer para conocer el estado 
 ; del rtc
 
-secuencia_de_inicializacion:   OUTPUT   dat_dir_0, escribe_dir
-                               OUTPUT   dat_dir_1, escribe_dato
+secuencia_de_inicializacion:   OUTPUT   s0, escribe_dir
+                               OUTPUT   s1, escribe_dato
                                CALL      ciclo_listo ;  acomadar dentro del inicializado
-                               ; falta algo
-                               OUTPUT   dat_dir_0, escribe_dir
-                               OUTPUT   dat_dir_2, escribe_dato
+                               
+                               OUTPUT   s0, escribe_dir
+                               OUTPUT   s2, escribe_dato
                                CALL      ciclo_listo ;  acomadar dentro del inicializado
-                               ; falta algo  
-                               OUTPUT   dat_dir_1, escribe_dir
-                               OUTPUT   dat_dir_3, escribe_dato
+                                 
+                               OUTPUT   s1, escribe_dir
+                               OUTPUT   s3, escribe_dato
                                CALL      ciclo_listo ;  acomadar dentro del inicializado
-                               ; falta algo 
+                               
                                RETURN
-ciclo_listo:        SUB       uno, listo
+                               
+leer:   
+
+
+
+
+
+
+
+
+
+ciclo_listo:        INPUT     s5, listo
+                    INPUT     s4, UNO
+                    SUB       s4, s5
                     JUMP      NZ, ciclo_listo
                     RETURN       
 
