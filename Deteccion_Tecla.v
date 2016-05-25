@@ -34,7 +34,12 @@ module Deteccion_Tecla(
 	 wire [7:0] catodo2;
 	 wire [7:0] catodo3;
 	 wire [7:0] catodo4;
-	 wire [5:0] cuenta;
+	 
+	 wire [3:0] Salida_D;
+	 wire [3:0] Salida_U;
+	 
+	 assign Salida_D = Salida [7:4];
+	 assign Salida_U = Salida [3:0];
 	
 	 ps2_rx F1 (
     .clk(clk), 
@@ -54,16 +59,22 @@ module Deteccion_Tecla(
     .got_code_tick(got_code_tick)
     );
 	 
+	 Registro F3(
+    .clk(clk), 
+    .reset(reset), 
+    .en(got_code_tick), 
+    .codigo(dout), 
+    .Salida(Salida)
+    );
 	 
-	 Decodificador F3 (
-    .Cuenta(cuenta), 
+	 Decodificador F4 (
+    .Codigo_U(Salida_U), 
     .catodo1(catodo1), 
-	 .catodo2(catodo2), 
     .catodo3(catodo3), 
     .catodo4(catodo4)
     );
 	 
-	 Control F4 (
+	 Control F5 (
     .clk(clk), 
     .rst(reset), 
     .in3(catodo4), 
@@ -74,12 +85,9 @@ module Deteccion_Tecla(
     .catodo(catodo)
     );
 	 
-	 Contador_AD F5 (
-    .rst(reset), 
-    .Cambio(dout), 
-    .got_data(got_code_tick), 
-    .clk(clk), 
-    .Cuenta(cuenta)
+	 Decodificador_2 F6 (
+    .Codigo_D(Salida_D), 
+    .catodo2(catodo2)
     );
 	 
 

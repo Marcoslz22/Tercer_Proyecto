@@ -1,0 +1,76 @@
+
+; defino los registros en donde van a ir las salidas
+; 
+CONSTANT control_listo ,  01      
+CONSTANT control_escribe, 02     
+CONSTANT control_lee,     03        
+CONSTANT escribe_dato,    04       
+CONSTANT escribe_dir,     05      
+
+; defino los puertos de entrada, los que van al MUX de los esquematicos
+CONSTANT listo,                     01
+CONSTANT listo_escribe,             02
+CONSTANT listo_lee,                 03
+
+; defino los puertos de entrada, de la carga de los registros
+CONSTANT      dat_dir_0, 04; 02
+CONSTANT      dat_dir_1, 05; 10
+CONSTANT      dat_dir_2, 06; 00 
+CONSTANT      dat_dir_3, 07; D2
+CONSTANT      UNO,       08; 1
+CONSTANT      F1,        09; f1
+CONSTANT      H_21,      10; 21
+
+Iniciar:            INPUT    s0, dat_dir_0
+                    INPUT    s1, dat_dir_1
+                    INPUT    s2, dat_dir_2;--------no cambiar------------
+                    INPUT    s3, dat_dir_3
+                    INPUT    s4, UNO ;-------------no cambiarlo----------
+                    CALL     secuencia_de_inicializacion
+                    CALL     leer; lee los datos provenientes del rtc
+                    ; CALL     escribir tener en cuenta las interrupcones
+                    
+;La maquina de estados 'iniciar' debe generar una bandera cuando le llegue cuando el pico le envie control_listo en alto, 
+;hasta que la maquina no envie listo en alto se esperara mediante el cilo la carga de los datos, cuando esta termine levanta 
+; la bandera de listo y se sale del ciclo, asi como el pico pone a control_listo en bajo
+;ciclo_listo se intancia en secuencia_de_inicializacio, cuando bucle de c-listo, se hace un jump a leer para conocer el estado 
+; del rtc
+
+secuencia_de_inicializacion:   OUTPUT   s0, escribe_dir
+                               OUTPUT   s1, escribe_dato
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;  
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
+                               
+                               OUTPUT   s0, escribe_dir
+                               OUTPUT   s2, escribe_dato
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;  
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
+                               
+                               OUTPUT   s1, escribe_dir
+                               OUTPUT   s3, escribe_dato
+                               OUTPUT   s4, control_listo
+                               CALL     ciclo_listo ;
+                              ; esto se hace por fuera OUTPUT   s2, control_listo; reinicio
+                               
+                               RETURN
+                               
+leer:   INPUT  s0, F1
+        OUTPUT s0, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s5, H_21
+        OUTPUT s5, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        JUMP leer
+
+ciclo_listo:        INPUT     s5, listo
+                    SUB       s4, s5
+                    JUMP      NZ, ciclo_listo
+                    RETURN       
+
+; la escritura se debe realizar con interrupciones, ya que se utliza un perifirico para realizarla (teclado)

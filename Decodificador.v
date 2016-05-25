@@ -19,112 +19,95 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Decodificador(
-   input [5:0] Cuenta,
-	output reg [7:0] catodo1,catodo2,catodo3,catodo4
+   input [3:0] Codigo_U,
+	output reg [7:0] catodo1,catodo3,catodo4
     );
     
 	 always @(*)
 	    begin
-	    case (Cuenta)
-		    6'd0: begin
+	    case (Codigo_U)
+		    4'h0: begin
 			           catodo1 <= 8'b00000011;
-						  catodo2 <= 8'b00000011;
 					     catodo3 <= 8'b00000011;
 					     catodo4 <= 8'b00000011;
 			        end 
-			 6'd1: begin
+			 4'h1: begin
 						 catodo1 <= 8'b10011111;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011; 
 			        end 
-			 6'd2: begin
+			 4'h2: begin
 						 catodo1 <= 8'b00100101;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd3: begin
+			 4'h3: begin
 						 catodo1 <= 8'b00001101;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd4: begin
+			 4'h4: begin
 						 catodo1 <= 8'b10011001;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd5: begin
+			 4'h5: begin
 						 catodo1 <= 8'b01001001;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd6: begin
+			 4'h6: begin
 						 catodo1 <= 8'b01000001;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd7: begin
+			 4'h7: begin
 						 catodo1 <= 8'b00011111;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd8: begin
+			 4'h8: begin
 						 catodo1 <= 8'b00000001;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd9: begin
+			 4'h9: begin
 						 catodo1 <= 8'b00011001;
-						 catodo2 <= 8'b00000011;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd10: begin
-						 catodo1 <= 8'b00000011;
-						 catodo2 <= 8'b10011111;
-						 catodo3 <= 8'b00000011;
-						 catodo4 <= 8'b00000011;
-			        end 
-			 6'd11: begin
-						 catodo1 <= 8'b10011111;
-						 catodo2 <= 8'b10011111;
-						 catodo3 <= 8'b00000011;
-						 catodo4 <= 8'b00000011;
-			        end 
-			 6'd12: begin
-						 catodo1 <= 8'b00100101;
-						 catodo2 <= 8'b10011111;
-						 catodo3 <= 8'b00000011;
-						 catodo4 <= 8'b00000011;
-			        end 
-			 6'd13: begin
-						 catodo1 <= 8'b00001101;
-						 catodo2 <= 8'b10011111;
-						 catodo3 <= 8'b00000011;
-						 catodo4 <= 8'b00000011;
-			        end 
-			 6'd14: begin
+			 4'hA: begin
 						 catodo1 <= 8'b10011001;
-						 catodo2 <= 8'b10011111;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
-			 6'd15: begin
+			 4'hB: begin
 						 catodo1 <= 8'b01001001;
-						 catodo2 <= 8'b10011111;
+						 catodo3 <= 8'b00000011;
+						 catodo4 <= 8'b00000011;
+			        end 
+			 4'hC: begin
+						 catodo1 <= 8'b01000001;
+						 catodo3 <= 8'b00000011;
+						 catodo4 <= 8'b00000011;
+			        end 
+			 4'hD: begin
+						 catodo1 <= 8'b00011111;
+						 catodo3 <= 8'b00000011;
+						 catodo4 <= 8'b00000011;
+			        end 
+			 4'hE: begin
+						 catodo1 <= 8'b00000001;
+						 catodo3 <= 8'b00000011;
+						 catodo4 <= 8'b00000011;
+			        end 
+			 4'hF: begin
+						 catodo1 <= 8'b00011001;
 						 catodo3 <= 8'b00000011;
 						 catodo4 <= 8'b00000011;
 			        end 
 			 default: begin
 						 catodo1 <= 8'b10011111;
-						 catodo2 <= 8'b10011111;
 						 catodo3 <= 8'b10011111; 
 						 catodo4 <= 8'b10011111;
                    end 	
