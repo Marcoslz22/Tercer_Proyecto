@@ -21,6 +21,8 @@ CONSTANT      UNO,       08; 1
 CONSTANT      F1,        09; f1
 CONSTANT      H_21,      10; 21
 
+CALL     Iniciar; 
+
 Iniciar:            INPUT    s0, dat_dir_0
                     INPUT    s1, dat_dir_1
                     INPUT    s2, dat_dir_2;--------no cambiar------------
@@ -29,7 +31,8 @@ Iniciar:            INPUT    s0, dat_dir_0
                     CALL     secuencia_de_inicializacion
                     CALL     leer; lee los datos provenientes del rtc
                     ; CALL     escribir tener en cuenta las interrupcones
-                    
+                    JUMP Iniciar
+
 ;La maquina de estados 'iniciar' debe generar una bandera cuando le llegue cuando el pico le envie control_listo en alto, 
 ;hasta que la maquina no envie listo en alto se esperara mediante el cilo la carga de los datos, cuando esta termine levanta 
 ; la bandera de listo y se sale del ciclo, asi como el pico pone a control_listo en bajo
