@@ -18,8 +18,8 @@ CONSTANT      dat_dir_1, 05; 10
 CONSTANT      dat_dir_2, 06; 00 
 CONSTANT      dat_dir_3, 07; D2
 CONSTANT      UNO,       08; 1
-CONSTANT      F1,        09; f1
-CONSTANT      H_21,      10; 21
+CONSTANT      F_1,       09; f1
+CONSTANT      H_21,      0A; 21
 
 CALL     Iniciar; 
 
@@ -28,12 +28,11 @@ Iniciar:            INPUT    s0, dat_dir_0
                     INPUT    s2, dat_dir_2;--------no cambiar------------
                     INPUT    s3, dat_dir_3
                     INPUT    s4, UNO ;-------------no cambiarlo----------
-                    INPUT    s5, H_21
+			    INPUT    s6, H_21
                     CALL     secuencia_de_inicializacion
                     CALL     leer; lee los datos provenientes del rtc
                     ; CALL     escribir tener en cuenta las interrupcones
-                    JUMP Iniciar
-
+                    JUMP Iniciar                    
 ;La maquina de estados 'iniciar' debe generar una bandera cuando le llegue cuando el pico le envie control_listo en alto, 
 ;hasta que la maquina no envie listo en alto se esperara mediante el cilo la carga de los datos, cuando esta termine levanta 
 ; la bandera de listo y se sale del ciclo, asi como el pico pone a control_listo en bajo
@@ -60,21 +59,22 @@ secuencia_de_inicializacion:   OUTPUT   s0, escribe_dir
                                
                                RETURN
                                
-leer:   INPUT  s0, F1
+leer:   INPUT  s0, F_1
         OUTPUT s0, escribe_dir
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
-        INPUT  s5, H_21
-        OUTPUT s5, escribe_dir
+        INPUT  s6, H_21
+        OUTPUT s6, escribe_dir
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         JUMP leer
 
 ciclo_listo:        INPUT     s5, listo
-                    COMPARE       s4, s5
+                    COMPARE   s4, s5
                     JUMP      NZ, ciclo_listo
                     RETURN       
 
 ; la escritura se debe realizar con interrupciones, ya que se utliza un perifirico para realizarla (teclado)
+
