@@ -28,6 +28,7 @@ Iniciar:            INPUT    s0, dat_dir_0
                     INPUT    s2, dat_dir_2;--------no cambiar------------
                     INPUT    s3, dat_dir_3
                     INPUT    s4, UNO ;-------------no cambiarlo----------
+                    INPUT    s5, H_21
                     CALL     secuencia_de_inicializacion
                     CALL     leer; lee los datos provenientes del rtc
                     ; CALL     escribir tener en cuenta las interrupcones
@@ -72,7 +73,7 @@ leer:   INPUT  s0, F1
         JUMP leer
 
 ciclo_listo:        INPUT     s5, listo
-                    SUB       s4, s5
+                    COMPARE       s4, s5
                     JUMP      NZ, ciclo_listo
                     RETURN       
 
