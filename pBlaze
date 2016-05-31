@@ -39,9 +39,7 @@ CONSTANT      CINCO,   15 ; 5
 CONSTANT      SEIS,    16; 6
 CONSTANT      SIETE,   17 ; 7
 CONSTANT      OCHO,    18; 8
-CONSTANT      NUEVE,   19 ; 9
-CONSTANT      DIEZ,    1A; 10
-CONSTANT      ONCE,    1B;11
+
 
 CALL     Iniciar; 
 
@@ -88,31 +86,43 @@ leer:   INPUT  s0, F_1
         
         INPUT  s6, H_21; segundos
         OUTPUT s6, escribe_dir
+        INPUT  s7, dat_dir_0 ;direccion 2 
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         INPUT  s6, H_22; minuto
         OUTPUT s6, escribe_dir
+        INPUT  s7, UNO ;direccion 1
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         INPUT  s6, H_23; hora
         OUTPUT s6, escribe_dir
+        INPUT  s7, dat_dir_2 ;direccion 0
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         INPUT  s6, H_24; dia
         OUTPUT s6, escribe_dir
+        INPUT  s7, CUATRO;direccion 4
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         INPUT  s6, H_25; mes
         OUTPUT s6, escribe_dir
+        INPUT  s7, TRES;direccion 3
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
         INPUT  s6, H_26; año
         OUTPUT s6, escribe_dir
+        INPUT  s7, CINCO;direccion 5
+        OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
