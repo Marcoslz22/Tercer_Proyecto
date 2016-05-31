@@ -5,12 +5,13 @@ CONSTANT control_listo ,  01
 CONSTANT control_escribe, 02     
 CONSTANT control_lee,     03        
 CONSTANT escribe_dato,    04       
-CONSTANT escribe_dir,     05      
+CONSTANT escribe_dir,     05 
+CONSTANT direccion,       06; para controlar lo que llega al VGA
 
 ; defino los puertos de entrada, los que van al MUX de los esquematicos
 CONSTANT listo,                     01
-CONSTANT listo_escribe,             02
-CONSTANT listo_lee,                 03
+
+
 
 ; defino los puertos de entrada, de la carga de los registros
 CONSTANT      dat_dir_0, 04; 02
@@ -19,7 +20,28 @@ CONSTANT      dat_dir_2, 06; 00
 CONSTANT      dat_dir_3, 07; D2
 CONSTANT      UNO,       08; 1
 CONSTANT      F_1,       09; f1
-CONSTANT      H_21,      0A; 21
+CONSTANT      H_21,      0A; 21 segundo
+CONSTANT      H_22,      0B; 22 minuto
+CONSTANT      H_23,      0C; 23 hora
+CONSTANT      H_24,      0D; 24 dia
+CONSTANT      H_25,      0E; 25 mes
+CONSTANT      H_26,      0F; 26 año
+CONSTANT      H_41,      10; 41 seg crono
+CONSTANT      H_42,      11; 42 min crono
+CONSTANT      H_43,      12; 43 hora crono
+
+
+; defino las entradas del mux donde van a estar las posiciones para las direcciones
+;No hay que poner UNO ni CERO poruqe ya estan
+CONSTANT      TRES,    13  ; 3
+CONSTANT      CUATRO,  14  ; 4
+CONSTANT      CINCO,   15 ; 5
+CONSTANT      SEIS,    16; 6
+CONSTANT      SIETE,   17 ; 7
+CONSTANT      OCHO,    18; 8
+CONSTANT      NUEVE,   19 ; 9
+CONSTANT      DIEZ,    1A; 10
+CONSTANT      ONCE,    1B;11
 
 CALL     Iniciar; 
 
@@ -64,7 +86,32 @@ leer:   INPUT  s0, F_1
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
         
-        INPUT  s6, H_21
+        INPUT  s6, H_21; segundos
+        OUTPUT s6, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_22; minuto
+        OUTPUT s6, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_23; hora
+        OUTPUT s6, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_24; dia
+        OUTPUT s6, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_25; mes
+        OUTPUT s6, escribe_dir
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_26; año
         OUTPUT s6, escribe_dir
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
