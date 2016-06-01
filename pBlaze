@@ -209,6 +209,7 @@ mod_reloj:
         OUTPUT s7, direccion
         OUTPUT s4, control_escribe  
         CALL     ciclo_listo
+        
         RETURNI ENABLE
       
 ADDRESS 3FF
