@@ -18,9 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Contador_AD_Segundos(
+module Contador_AD(
     input rst,
-	 input [7:0]estado,
 	 input [1:0] en,
     input [7:0] Cambio,
 	 input got_data,
@@ -33,17 +32,17 @@ module Contador_AD_Segundos(
 	 parameter X = 59;
 
     always @(posedge clk)
-	 if (rst)
-	    Cuenta <= 0;
-    else	if (en == 2'd0 && (estado == 8'h6C || estado == 8'h75))
-         begin
-	         if (Cambio == 8'h73 && got_data)
-				begin
-				   if (Cuenta == X)
-				      Cuenta <= 0;
-					else 
-				      Cuenta <= Cuenta + 1'd1;
-				end
+	 if (en == 2'd0)
+	 begin 
+       if (rst)
+         Cuenta <= 0;
+       else if (Cambio == 8'h75 && got_data)
+				  begin
+				     if (Cuenta == X)
+						   Cuenta <= 0;
+					  else 
+						   Cuenta <= Cuenta + 1'd1;
+				  end
 				else if (Cambio == 8'h72 && got_data)
 					  begin
 				        if (Cuenta == 0)
@@ -53,7 +52,6 @@ module Contador_AD_Segundos(
 				     end
 					  else 
 					     Cuenta <= Cuenta;
-	      end
-	      else 
-			   Cuenta <= Cuenta;
+	 end
+	 else Cuenta <= Cuenta;
 endmodule

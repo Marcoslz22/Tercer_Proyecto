@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Decodificador(
-   input [5:0] Cuenta,
+   input [6:0] Cuenta,
 	output reg [7:0] catodo1,catodo2,catodo3,catodo4
     );
     

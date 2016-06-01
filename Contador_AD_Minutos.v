@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    19:47:01 05/24/2016 
+// Create Date:    15:14:36 05/31/2016 
 // Design Name: 
-// Module Name:    Contador_AD 
+// Module Name:    Contador_AD_minutos 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Contador_AD_Segundos(
+module Contador_AD_Minutos(
     input rst,
 	 input [7:0]estado,
 	 input [1:0] en,
@@ -35,7 +35,7 @@ module Contador_AD_Segundos(
     always @(posedge clk)
 	 if (rst)
 	    Cuenta <= 0;
-    else	if (en == 2'd0 && (estado == 8'h6C || estado == 8'h75))
+    else	if (en == 2'd1 && (estado == 8'h6C || estado == 8'h75))
          begin
 	         if (Cambio == 8'h73 && got_data)
 				begin

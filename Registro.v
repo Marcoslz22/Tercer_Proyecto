@@ -31,7 +31,10 @@ module Registro(
 	    if (reset)
 		    Salida = 8'd0;
 		 else if (en)
-		         Salida = codigo;
+		         if (codigo == 8'h6C || codigo == 8'h75 || codigo == 8'h7D)
+		            Salida = codigo;
+					else 
+					   Salida = Salida;
 				else 
 				   Salida = Salida;			 
 	 end 
