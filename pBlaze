@@ -39,8 +39,14 @@ CONSTANT      CINCO,   15 ; 5
 CONSTANT      SEIS,    16; 6
 CONSTANT      SIETE,   17 ; 7
 CONSTANT      OCHO,    18; 8
+CONSTANT      REG_1,   1A;fecha
+CONSTANT      REG_2,   1B;reloj
+CONSTANT      REG_3,   1C;cronometro
 
+; defino la tecla destinada para la interrupcion
+CONSTANT tecla, 19
 
+ENABLE INTERRUPT
 CALL     Iniciar; 
 
 Iniciar:            INPUT    s0, dat_dir_0
@@ -51,7 +57,6 @@ Iniciar:            INPUT    s0, dat_dir_0
 			    INPUT    s6, H_21
                     CALL     secuencia_de_inicializacion
                     CALL     leer; lee los datos provenientes del rtc
-                    ; CALL     escribir tener en cuenta las interrupcones
                     JUMP Iniciar                    
 ;La maquina de estados 'iniciar' debe generar una bandera cuando le llegue cuando el pico le envie control_listo en alto, 
 ;hasta que la maquina no envie listo en alto se esperara mediante el cilo la carga de los datos, cuando esta termine levanta 
@@ -133,5 +138,79 @@ ciclo_listo:        INPUT     s5, listo
                     JUMP      NZ, ciclo_listo
                     RETURN       
 
+
+escribir:
+	INPUT s10, tecla
+	COMPARE s10, 01  ; fecha
+	JUMP Z, mod_fecha
+	COMPARE s10, 02  ; reloj
+	JUMP Z, mod_reloj
+;	COMPARE s10, 03  ; cronometro
+;	JUMP Z, mod_cronometro	
+	RETURNI ENABLE
 ; la escritura se debe realizar con interrupciones, ya que se utliza un perifirico para realizarla (teclado)
 
+mod_fecha: 
+        INPUT  s6, H_24; dia
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_1; dia
+        OUTPUT s11, escribe_dato
+        INPUT  s7, CUATRO;direccion 4
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe
+        CALL     ciclo_listo 
+
+        
+        INPUT  s6, H_25; mes
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_2; mes
+        OUTPUT s11, escribe_dato
+        INPUT  s7, TRES;direccion 3
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe  
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_26; año
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_3; año
+        OUTPUT s11, escribe_dato
+        INPUT  s7, CINCO;direccion 5
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe  
+        CALL     ciclo_listo
+        
+        RETURNI ENABLE
+        
+mod_reloj: 
+        INPUT  s6, H_21; segundos
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_1; segundos
+        OUTPUT s11, escribe_dato
+        INPUT  s7, dat_dir_0 ;direccion 2 
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe
+        CALL     ciclo_listo 
+
+        
+        INPUT  s6, H_22; minuto
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_2; minuto
+        OUTPUT s11, escribe_dato
+        INPUT  s7, UNO ;direccion 1
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe  
+        CALL     ciclo_listo 
+        
+        INPUT  s6, H_23; hora
+        OUTPUT s6, escribe_dir
+        INPUT  s11, REG_3; hora
+        OUTPUT s11, escribe_dato
+        INPUT  s7, dat_dir_2 ;direccion 0
+        OUTPUT s7, direccion
+        OUTPUT s4, control_escribe  
+        CALL     ciclo_listo
+        
+        RETURNI ENABLE
+      
+ADDRESS 3FF
+JUMP escribir
