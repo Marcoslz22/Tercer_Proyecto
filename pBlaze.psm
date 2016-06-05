@@ -41,7 +41,10 @@ CONSTANT      OCHO,    18; 8
 CONSTANT      REG_1,   1A;fecha
 CONSTANT      REG_2,   1B;reloj
 CONSTANT      REG_3,   1C;cronometro
-CONSTANT      RST_CRONO,1D;reset cronometro
+CONSTANT      RST_CRONO,1E;reset cronometro
+CONSTANT	   F_0,1F;
+CONSTANT      F_2,20;
+
 
 ; defino la tecla destinada para la interrupcion
 CONSTANT tecla, 19
@@ -88,7 +91,7 @@ secuencia_de_inicializacion:   OUTPUT   s0, escribe_dir
                                
                                RETURN
 ;-------------------------------etiquitas-----------------------                               
-leer:   INPUT  s0, F_1
+leer:   INPUT  s0, F_0
         OUTPUT s0, escribe_dir
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
@@ -134,39 +137,20 @@ leer:   INPUT  s0, F_1
         OUTPUT s7, direccion
         OUTPUT s4, control_lee
         CALL     ciclo_listo 
+	   
+	   CALL timer
 
-;--------------------TIMER-------------------------------------
-	   INPUT  s6, H_41; segundo crono
-        OUTPUT s6, escribe_dir
-        INPUT  s7, OCHO;direccion 8
-        OUTPUT s7, direccion
-        OUTPUT s4, control_lee
-        CALL     ciclo_listo 
-
-	  INPUT  s6, H_42; minuto crono 
-        OUTPUT s6, escribe_dir
-        INPUT  s7, SIETE;direccion 7
-        OUTPUT s7, direccion
-        OUTPUT s4, control_lee
-        CALL     ciclo_listo 
-
-	   INPUT  s6, H_43; hora crono
-        OUTPUT s6, escribe_dir
-        INPUT  s7, SEIS;direccion 6
-        OUTPUT s7, direccion
-        OUTPUT s4, control_lee
-        CALL     ciclo_listo 
-
-        INPUT s6, RST_CRONO; reset crono
-	   INPUT  s7, UNO
-        COMPARE s6, s7
-	   CALL Z, reset_crono
-;----------------------------fin timer--------------------------
         
         INPUT  s7, UNO
 	   INPUT    sC, tecla_2
         COMPARE sC, s7
         CALL Z, escribir
+
+        INPUT s6, RST_CRONO; reset crono
+	   INPUT  s7, UNO
+        COMPARE s6, s7
+	   CALL Z, reset_crono
+
         JUMP leer
 ;-------------------------------etiquitas-----------------------
 
@@ -182,10 +166,9 @@ escribir:
 	JUMP Z, mod_fecha
 	COMPARE sA, 6C  ; reloj
 	JUMP Z, mod_reloj
-	RETURN
-	
 	COMPARE sA, 75  ; cronometro
-	JUMP Z, mod_cronometro	
+	JUMP Z, mod_cronometro
+	RETURN	
 ;---------------------------------------------------------------
         
 
@@ -264,9 +247,48 @@ mod_reloj:
         
         JUMP leer
 ;---------------------------------------------------------------
+
+
+;--------------------TIMER-------------------------------------
+timer:
+	   ;INPUT  s7, F_2;direccion 8 
+        ;OUTPUT s7, direccion
+
+       ; INPUT  s0, F_2
+       ; OUTPUT s0, escribe_dir
+       ; OUTPUT s4, control_lee
+       ; CALL     ciclo_listo 
+
+	   INPUT  s6, H_41; segundo crono
+        OUTPUT s6, escribe_dir
+        INPUT  s7, OCHO;direccion 8
+        OUTPUT s7, direccion
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+
+	  INPUT  s6, H_42; minuto crono 
+        OUTPUT s6, escribe_dir
+        INPUT  s7, SIETE;direccion 7
+        OUTPUT s7, direccion
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+
+	   ;INPUT  s7, F_2;direccion 8 
+        ;OUTPUT s7, direccion
+
+
+	   INPUT  s6, H_43; hora crono
+        OUTPUT s6, escribe_dir
+        INPUT  s7, SEIS;direccion 6
+        OUTPUT s7, direccion
+        OUTPUT s4, control_lee
+        CALL     ciclo_listo 
+	   RETURN
+;----------------------------fin timer--------------------------
         
 
 mod_cronometro: 
+
 
         OUTPUT s2, escribe_dir
         INPUT  sB, OCHO; arrancar crono
@@ -301,10 +323,11 @@ mod_cronometro:
         CALL     ciclo_listo 
 
 
-        INPUT  s0, F_1
+          INPUT  s0, F_2
         OUTPUT s0, escribe_dir
 	   OUTPUT s4, control_escribe 
         CALL     ciclo_listo 
+
 
         
         JUMP leer
@@ -339,7 +362,7 @@ reset_crono:
         CALL     ciclo_listo 
 
 
-        INPUT  s0, F_1
+        INPUT  s0, F_2
         OUTPUT s0, escribe_dir
 	   OUTPUT s4, control_escribe 
         CALL     ciclo_listo
@@ -350,7 +373,9 @@ reset_crono:
         OUTPUT s4, control_escribe
         CALL     ciclo_listo
 
+
 	   RETURN 
+
 
 
 
