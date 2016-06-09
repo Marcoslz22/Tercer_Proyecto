@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    15:13:24 06/01/2016 
+// Create Date:    21:03:46 05/24/2016 
 // Design Name: 
-// Module Name:    Senal_Escritura 
+// Module Name:    MUX_SALIDA 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Senal_Escritura(
-    input [7:0] Tecla,
-	 input reset_escritura,
-	 input clk,
-	 input got_data,
-	 output reg [7:0] Senal
+module MUX_SALIDA(
+
+input [7:0] direccion,
+input [7:0] dato,
+input seleccion,
+output [7:0] salida_bus
+
     );
-	 
-	 always @(posedge clk)
-	   if (reset_escritura)
-		   Senal = 8'd0;
-	   else if (Tecla == 8'h70 && got_data)
-		        Senal = 8'd1;
-		     else
-		        Senal = Senal;
-			
+
+   assign salida_bus = seleccion ? dato : direccion;
+
 endmodule

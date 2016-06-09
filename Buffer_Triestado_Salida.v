@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    15:13:24 06/01/2016 
+// Create Date:    00:06:29 04/09/2016 
 // Design Name: 
-// Module Name:    Senal_Escritura 
+// Module Name:    Buffer_Triestado_Salida 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,12 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Senal_Escritura(
-    input [7:0] Tecla,
-	 input reset_escritura,
-	 input clk,
-	 input got_data,
-	 output reg [7:0] Senal
+module Buffer_Triestado_Salida(
+    input [7:0] Deco_out,
+    input en,
+    output [7:0] RTC_in
     );
 	 
-	 always @(posedge clk)
-	   if (reset_escritura)
-		   Senal = 8'd0;
-	   else if (Tecla == 8'h70 && got_data)
-		        Senal = 8'd1;
-		     else
-		        Senal = Senal;
-			
+	 assign RTC_in = en ? Deco_out : 8'bz; 
+		 
 endmodule

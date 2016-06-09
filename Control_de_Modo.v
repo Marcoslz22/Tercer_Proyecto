@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    01:47:43 06/03/2016 
+// Create Date:    21:34:42 06/01/2016 
 // Design Name: 
-// Module Name:    Registro_Reset_Alarma 
+// Module Name:    Control_de_modo 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,18 +18,20 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Registro_Reset_Alarma(
-    input [7:0] Tecla ,
+module Control_de_modo(
+    input [7:0] Tecla,
+	 input [7:0] reset_escritura,
 	 input clk,
 	 input got_data,
-	 output reg Salida_Reset
+	 output reg Senal
     );
 	 
 	 always @(posedge clk)
-	    if (Tecla == 8'h79 && got_data)
-		    Salida_Reset = 1;
-       else 
-		    Salida_Reset = 0;
-          		 
-
+	   if (reset_escritura == 8'd1)
+		   Senal = 0;
+	   else if ((Tecla == 8'h6C || Tecla == 8'h75 || Tecla == 8'h7D) && got_data)
+		        Senal = 1;
+		     else
+		        Senal = Senal;
+			
 endmodule

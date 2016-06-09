@@ -29,24 +29,24 @@ module Contador_AD_Year(
     );
 	
 	 
-	 parameter N = 7;
-	 parameter X = 99;
+	 parameter N = 5;
+	 parameter X = 31;
 
     always @(posedge clk)
 	 if (rst)
-	    Cuenta <= 0;
+	    Cuenta <= 1;
     else	if (en == 2'd0 && estado == 8'h7D)
          begin
 	         if (Cambio == 8'h73 && got_data)
 				begin
 				   if (Cuenta == X)
-				      Cuenta <= 0;
+				      Cuenta <= 1;
 					else 
 				      Cuenta <= Cuenta + 1'd1;
 				end
 				else if (Cambio == 8'h72 && got_data)
 					  begin
-				        if (Cuenta == 0)
+				        if (Cuenta == 1)
 						     Cuenta <= X;
 					     else 
 						     Cuenta <= Cuenta - 1'd1;

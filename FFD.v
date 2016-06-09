@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    15:13:24 06/01/2016 
+// Create Date:    19:07:31 05/22/2016 
 // Design Name: 
-// Module Name:    Senal_Escritura 
+// Module Name:    FFD 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,17 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Senal_Escritura(
-    input [7:0] Tecla,
-	 input reset_escritura,
-	 input clk,
-	 input got_data,
-	 output reg [7:0] Senal
+module FFD(
+input wire rst,
+input wire clk,
+input wire [7:0] dato_mux,
+output reg [7:0] salida_picoblaze
     );
-	 
-	 always @(posedge clk)
-	   if (reset_escritura)
-		   Senal = 8'd0;
-	   else if (Tecla == 8'h70 && got_data)
-		        Senal = 8'd1;
-		     else
-		        Senal = Senal;
-			
+   always @(posedge clk or posedge rst)
+      if (rst) begin
+         salida_picoblaze <= 8'h00;
+      end else begin
+         salida_picoblaze <= dato_mux;
+      end
+
 endmodule

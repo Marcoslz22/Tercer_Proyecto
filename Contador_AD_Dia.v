@@ -29,18 +29,18 @@ module Contador_AD_Dia(
     );
 	
 	 
-	 parameter N = 5;
-	 parameter X = 31;
+	 parameter N = 7;
+	 parameter X = 99;
 
     always @(posedge clk)
 	 if (rst)
-	    Cuenta <= 0;
+	    Cuenta <= 1;
     else	if (en == 2'd2 && estado == 8'h7D)
          begin
 	         if (Cambio == 8'h73 && got_data)
 				begin
 				   if (Cuenta == X)
-				      Cuenta <= 0;
+				      Cuenta <= 1;
 					else 
 				      Cuenta <= Cuenta + 1'd1;
 				end

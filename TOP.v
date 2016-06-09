@@ -27,7 +27,8 @@ module TOP
 	 input ps2c,
 	 output [7:0] RTC_in,
 	 output A_D,CS,RD,WR, hsync, vsync,
-	 output [7:0] rgb
+	 output [7:0] rgb,
+	 output reg Flag_Alarma_VGA_1
 	 );
 	 
 	 wire write_strobe, interrupt,sleep, k_write_strobe, read_strobe, interrupt_ack,PB_in, Pulso_Listo,listo,contro_listo,contro_lee,contro_escribe;
@@ -37,7 +38,7 @@ module TOP
 	 wire [7:0] salida_bus;
 	 wire [2:0]estado_m;
     wire [3:0]c_5;
-	 wire [3:0] direccion;
+	 wire [3:0] direccion; 
 	 wire [7:0] port_id;
 	 wire [7:0]in_port;
 	 wire [7:0]out_port, RG1, RG2, RG3,VGA_1,VGA_2,VGA_3, seg_Ti, min_Ti, hor_Ti;
@@ -51,6 +52,7 @@ module TOP
 	 wire [7:0]tecla;
 	 wire [7:0]tecla2;
 	 wire [7:0]tecla3;
+	 wire [7:0] Salida_G;
 	
 	
 	 assign interrupt=0;
@@ -58,16 +60,11 @@ module TOP
     assign u_seg[3:0] = RTC_out [3:0];
     assign am_pm=0;
 	 assign sleep=0;
+
 	
 	 assign off_alarma=~Flag_Alarma_VGA;
 	 assign on_alarma=Flag_Alarma_VGA;
-
-
-
-
-	 //__________________________________________________________________
-	
-
+	 
 	 //____________________________________________________________________
 	 PICOBLAZE f2(
     .interrupt(interrupt),// 
@@ -195,7 +192,8 @@ module TOP
     .ps2c(ps2c), 
     .reset_escritura(contro_escribe), 
     .Segundos_RTC(seg_Ti),
-    .Minutos_RTC(Minutos_RTC), 	 
+    .Minutos_RTC(min_Ti), 
+    .Horas_RTC(hor_Ti),	 
     .Senal(tecla2), 
     .Senal_2_ren(escribiendo), 
     .Parametro(tecla), 
@@ -206,7 +204,18 @@ module TOP
     .VGA_2(VGA_2), 
     .VGA_3(VGA_3), 
     .Flag_VGA(Flag_Alarma_VGA), 
-    .Flag_Pico(tecla3)
+    .Flag_Pico(tecla3),
+	 .Salida_G (Salida_G)
     );
+	 
+	 always @(posedge clk)
+	 begin
+	    if (!seg_Ti && !min_Ti && !hor_Ti && tecla == 8'h75 && Salida_G == 8'h70) 
+		    Flag_Alarma_VGA_1 = 1;
+		 else 
+		    Flag_Alarma_VGA_1 = 0;
+	 end 
+	 
+
 	 
 endmodule

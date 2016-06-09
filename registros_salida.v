@@ -165,4 +165,3 @@ module registros_salida(
 				end
 	end
 endmodule
-
